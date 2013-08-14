@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html ng-app="track" ng-cloak>
+  <head>
+    <title> Track </title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.js"></script>
+    <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.5.0.js"></script>
+    <script src="scripts/track.js"></script>
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+  </head>
+  <body ng-controller="TrackCtrl">
+    <div class="container">
+      <h2> Expense Tracker </h2>
+      <tabset>
+        <tab heading="Things to buy"> Hello </tab>
+        <tab heading="Record purchase">
+          <div class="form-group">
+              <input type="text" ng-model="item" typeahead="item for item in getItems($viewValue)" class="form-control" placeholder="Enter item">
+          </div>
+          <div class="form-group">
+              <input type="number" ng-model="quantity" class="form-control" placeholder="Enter quantity">
+          </div>
+          <div class="form-group">
+              <input type="number" ng-model="price" class="form-control" placeholder="Enter price">
+          </div>
+          <div class="form-group">
+              <input type="text" ng-model="vendor" class="form-control" placeholder="Enter vendor">
+          </div>
+          <div class="form-group">
+              <button type="submit" ng-click="save()" class="btn btn-default btn-primary">Save</button>
+          </div>
+          <div class="form-group">
+            <alert ng-repeat="alert in alerts" type="alert.type"> {{ alert.msg }} </alert>
+          </div>
+      </tab>
+      <tab heading="Analytics">Inside</tab>
+    </tabset>
+    </div>
+  </body>
+</html>
