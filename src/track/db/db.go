@@ -17,6 +17,27 @@ func getConnection() (con *sql.DB) {
     
     return
 }
+func FindVendors (searchString string) (vendors [] string, err error) {
+    vendors = []string {}
+    
+    con := getConnection()
+    defer con.Close()
+
+    rows, err := con.Query ("SELECT vendor from purchases where vendor LIKE '%" +  searchString + "%'")
+    
+    if err != nil {
+        panic (err)
+    }
+    
+    for rows.Next() {
+        var vendor string
+        rows.Scan (&vendor)
+
+        vendors = append (vendors, vendor)
+    }
+    
+    return
+}
 
 func FindItems (searchString string) (items [] string, err error) {
     items = []string {}

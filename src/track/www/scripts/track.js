@@ -13,10 +13,19 @@ function TrackCtrl ($http, $scope) {
                 $scope.alerts.push (data.Msg);
         });
     };
-    $scope.getItems = function(itemName) {
-        return $http.get ("/items?name=" + itemName).then(function (response)
+    
+    function search(type, name) {
+        return $http.get ("/" + type + "?name=" + name).then(function (response)
         {
           return response.data;
         });
+
+    }
+    $scope.getItems = function(itemName) {
+        return search ("items", itemName);
+    };
+    
+    $scope.getVendors = function(vendorName) {
+        return search ("vendors", vendorName);
     };
 }

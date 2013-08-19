@@ -97,6 +97,16 @@ func getItemsHandler (w http.ResponseWriter, r *http.Request) {
     fmt.Fprintf (w, "%s", data)
 }
 
+func getVendorsHandler (w http.ResponseWriter, r *http.Request) {
+    searchString := r.FormValue ("name")
+    items, _ := db.FindVendors (searchString)
+
+    w.Header ().Add ("Content-Type", "application/json")
+    
+    data, _ := json.Marshal (items);
+
+    fmt.Fprintf (w, "%s", data)
+}
 func saveHandler (w http.ResponseWriter, r *http.Request) {
     body, err := ioutil.ReadAll(r.Body)
     if err != nil {
