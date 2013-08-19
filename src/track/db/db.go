@@ -61,6 +61,55 @@ func FindItems (searchString string) (items [] string, err error) {
     return
 }
 
+func GetItemsToBuy () (items []string, err error) {
+    items = []string {}
+    con := getConnection()
+    defer con.Close()
+
+    rows, err := con.Query ("SELECT DISTINCT(item) from list")
+    
+    if err != nil {
+        panic (err)
+    }
+    
+    for rows.Next() {
+        var item string
+        rows.Scan (&item)
+
+        items = append (items, item)
+    }
+    
+    return
+}
+
+func RemoveFromItemsToBuy (item string) (err error) {
+    con := getConnection()
+    defer con.Close()
+
+    stmt, err := con.Prepare ("DELETE FROM list WHERE item=?")
+    
+    if err != nil {
+        panic (err)
+    }
+    
+    _, err = stmt.Exec (item)
+    return
+}
+
+func AddItemToBuy (item string) (err error) {
+    con := getConnection()
+    defer con.Close()
+
+    stmt, err := con.Prepare ("INSERT INTO list (item) VALUES (?)")
+    
+    if err != nil {
+        return 
+    }
+
+    _, err = stmt.Exec (item)
+    return
+}
+
 func Save (item string, quantity float32, price float32, vendor string, date time.Time) (err error) {
     con := getConnection()
     defer con.Close()

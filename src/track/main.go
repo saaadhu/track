@@ -96,6 +96,57 @@ func getVendorsHandler (w http.ResponseWriter, r *http.Request) {
 
     fmt.Fprintf (w, "%s", data)
 }
+
+func getItemsToBuyHandler (w http.ResponseWriter, r *http.Request) {
+    items, _ := db.GetItemsToBuy ()
+
+    w.Header ().Add ("Content-Type", "application/json")
+    
+    data, _ := json.Marshal (items);
+
+    fmt.Fprintf (w, "%s", data)
+}
+
+func removeFromItemsToBuyHandler (w http.ResponseWriter, r *http.Request) {
+    body, err := ioutil.ReadAll(r.Body)
+    if err != nil {
+        panic(err)
+    }
+    
+    type JsonData struct {
+        Item string
+    }
+    
+    var jsonData JsonData
+    json.Unmarshal (body, &jsonData)
+    
+    defer r.Body.Close()
+    
+    err = db.RemoveFromItemsToBuy (jsonData.Item)
+    
+    getItemsToBuyHandler (w, r)
+}
+
+func addHandler (w http.ResponseWriter, r *http.Request) {
+    body, err := ioutil.ReadAll(r.Body)
+    if err != nil {
+        panic(err)
+    }
+    
+    type JsonData struct {
+        Item string
+    }
+
+    var jsonData JsonData
+    json.Unmarshal (body, &jsonData)
+    
+    defer r.Body.Close()
+
+    err = db.AddItemToBuy (jsonData.Item)
+
+    getItemsToBuyHandler (w, r)
+}
+
 func saveHandler (w http.ResponseWriter, r *http.Request) {
     body, err := ioutil.ReadAll(r.Body)
     if err != nil {
@@ -136,6 +187,9 @@ func saveHandler (w http.ResponseWriter, r *http.Request) {
 
 func initWebServer() {
     http.HandleFunc ("/save", saveHandler)
+    http.HandleFunc ("/add", addHandler)
+    http.HandleFunc ("/get_items_to_buy", getItemsToBuyHandler)
+    http.HandleFunc ("/remove_item_to_buy", removeFromItemsToBuyHandler)
     http.HandleFunc ("/items", getItemsHandler)
     http.Handle ("/view/", http.StripPrefix("/view/", http.FileServer(http.Dir("/home/saaadhu/code/git/track/src/track/www"))))
     http.ListenAndServe(":8081", nil)
