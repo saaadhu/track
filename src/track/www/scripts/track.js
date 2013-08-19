@@ -10,8 +10,13 @@ function TrackCtrl ($http, $scope) {
               "price" : $scope.price,
               "vendor" : $scope.vendor }).success (function (data) {
                 $scope.alerts = [];
-                $scope.alerts.push (data.Msg);
+                $scope.alerts.push ( {msg: data.Msg } );
         });
+    };
+    
+    $scope.closeAlert = function(index) {
+        $scope.alerts.splice(index, 1);
+        $scope.item = $scope.quantity = $scope.price = $scope.vendor = '';
     };
     
     function search(type, name) {
