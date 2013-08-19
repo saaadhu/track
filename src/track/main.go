@@ -33,17 +33,6 @@ func getUserId (w http.ResponseWriter, r *http.Request) string {
 */
 
 /*
-var oauthCfg = &oauth.Config {
-    ClientId : "117014106914.apps.googleusercontent.com",
-    ClientSecret : "JPvw1D4Jd9jo0GeqvXNLUNcq",
-    AuthURL: "https://accounts.google.com/o/oauth2/auth",
-    TokenURL: "https://accounts.google.com/o/oauth2/token",
-    RedirectURL: "http://tomtom.senthilthecoder.com/oauth2callback",
-    Scope: "https://www.googleapis.com/auth/userinfo.profile",
-}
-*/
-
-/*
 func authenticationHandler (w http.ResponseWriter, r *http.Request) {
     url := oauthCfg.AuthCodeURL("")
     http.Redirect (w, r, url, http.StatusFound)
