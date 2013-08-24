@@ -191,6 +191,7 @@ func initWebServer() {
     http.HandleFunc ("/get_items_to_buy", getItemsToBuyHandler)
     http.HandleFunc ("/remove_item_to_buy", removeFromItemsToBuyHandler)
     http.HandleFunc ("/items", getItemsHandler)
+    http.HandleFunc ("/vendors", getVendorsHandler)
     http.Handle ("/view/", http.StripPrefix("/view/", http.FileServer(http.Dir("/home/saaadhu/code/git/track/src/track/www"))))
     http.ListenAndServe(":8081", nil)
 }
