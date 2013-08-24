@@ -51,7 +51,21 @@
           </div>
         </div>
       </tab>
-      <tab heading="Analytics">Inside</tab>
+      <tab heading="Analytics">
+         <h4> Monthly Spendings </h4>
+         <table class="table table-striped table-bordered">
+           <th> Month </th>
+           <th> Total </th>
+           <tr ng-repeat="monthTotal in monthTotals">
+             <td>
+               {{ monthTotal.MonthAndYear }} 
+             </td>
+             <td>
+                 {{ monthTotal.Total }}
+             </td>
+            </tr>
+         </table>
+      </tab>
     </tabset>
     </div>
   </body>

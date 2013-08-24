@@ -17,6 +17,35 @@ func getConnection() (con *sql.DB) {
     
     return
 }
+
+type Spending struct {
+    MonthAndYear string
+    Total float32
+}
+
+func GetMonthSpendings() (spendings []Spending, err error)  {
+    spendings = []Spending{}
+    con := getConnection()
+    defer con.Close()
+
+    rows, err := con.Query ("SELECT YEAR(date), MONTHNAME(date), SUM(price) from purchases group by YEAR(date), MONTH(date) desc ")
+    
+    if err != nil {
+        panic (err)
+    }
+    
+    for rows.Next() {
+        var year string
+        var month string
+        var total float32
+        rows.Scan (&year, &month, &total)
+
+        spendings = append (spendings, Spending { month + "-" + string(year), total })
+    }
+    
+    return
+} 
+
 func FindVendors (searchString string) (vendors [] string, err error) {
     vendors = []string {}
     

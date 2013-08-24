@@ -41,6 +41,13 @@ function TrackCtrl ($http, $scope) {
                 $scope.items_to_buy = response.data;
             });
     }
+
+    $scope.getMonthlySpendings = function() {
+        $http.get ("/get_monthly_spendings").then(function (response)
+            {
+                $scope.monthTotals = response.data;
+            });
+    }
     
     $scope.removeFromItemsToBuy = function(index) {
         $http.post ("/remove_item_to_buy", { 
@@ -57,4 +64,5 @@ function TrackCtrl ($http, $scope) {
     };
     
     $scope.getItemsToBuy();
+    $scope.getMonthlySpendings();
 }

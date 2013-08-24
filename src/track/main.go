@@ -107,6 +107,15 @@ func getItemsToBuyHandler (w http.ResponseWriter, r *http.Request) {
     fmt.Fprintf (w, "%s", data)
 }
 
+func getMonthlySpendingsHandler (w http.ResponseWriter, r *http.Request) {
+    spendings, _ := db.GetMonthSpendings()
+    w.Header ().Add ("Content-Type", "application/json")
+    
+    data, _ := json.Marshal (spendings);
+
+    fmt.Fprintf (w, "%s", data)
+}
+
 func removeFromItemsToBuyHandler (w http.ResponseWriter, r *http.Request) {
     body, err := ioutil.ReadAll(r.Body)
     if err != nil {
@@ -192,6 +201,7 @@ func initWebServer() {
     http.HandleFunc ("/remove_item_to_buy", removeFromItemsToBuyHandler)
     http.HandleFunc ("/items", getItemsHandler)
     http.HandleFunc ("/vendors", getVendorsHandler)
+    http.HandleFunc ("/get_monthly_spendings", getMonthlySpendingsHandler)
     http.Handle ("/view/", http.StripPrefix("/view/", http.FileServer(http.Dir("/home/saaadhu/code/git/track/src/track/www"))))
     http.ListenAndServe(":8081", nil)
 }
