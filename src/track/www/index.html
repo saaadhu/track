@@ -15,7 +15,7 @@
       <tabset>
         <tab heading="Record purchase">
           <div class="form-group">
-              <input type="text" ng-model="item" typeahead="item for item in getItems($viewValue)" class="form-control" placeholder="Enter item">
+              <input type="text" autofocus ng-model="item" typeahead="item for item in getItems($viewValue)" class="form-control" placeholder="Enter item">
           </div>
           <div class="form-group">
               <input type="number" ng-model="quantity" class="form-control" placeholder="Enter quantity">
