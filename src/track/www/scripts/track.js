@@ -20,6 +20,7 @@ function TrackCtrl ($http, $scope) {
               "vendor" : $scope.vendor }).success (function (data) {
                 $scope.alerts = [];
                 $scope.alerts.push ( {msg: data.Msg } );
+                $scope.getMonthlySpendings();
         });
     };
     
