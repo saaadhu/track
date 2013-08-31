@@ -1,8 +1,16 @@
-angular.module('track', ['ui.bootstrap']);
+var app = angular.module('track', ['ui.bootstrap']);
+app.directive('ngBlur', function() {
+  return function( scope, elem, attrs ) {
+    elem.bind('blur', function() {
+      scope.$apply(attrs.ngBlur);
+    });
+  };
+});
 function TrackCtrl ($http, $scope) {
     $scope.navType = "tabs";
     $scope.alerts = [];
     $scope.items_to_buy = [];
+    $scope.recent_data = [];
     
     $scope.save_thing_to_buy = function() {
         $http.post ("/add",
@@ -63,6 +71,20 @@ function TrackCtrl ($http, $scope) {
     $scope.getVendors = function(vendorName) {
         return search ("vendors", vendorName);
     };
+
+    $scope.getRecentPurchasesOfItem = function() {
+        $http.post ("/recent", 
+            { "item" : $scope.item }).success (function (data) {
+              $scope.recent_data = data;
+            });
+    };
+
+    $scope.recalculate = function() {
+       for (i = 0; i< $scope.recent_data.length; ++i)
+       {
+            $scope.recent_data[i].ComparitivePrice = $scope.quantity * $scope.recent_data[i].NormalizedPrice;
+       }
+    }
     
     $scope.getItemsToBuy();
     $scope.getMonthlySpendings();

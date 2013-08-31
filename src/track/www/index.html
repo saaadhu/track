@@ -15,13 +15,13 @@
       <tabset>
         <tab heading="Record purchase">
           <div class="form-group">
-              <input type="text" autofocus ng-model="item" typeahead="item for item in getItems($viewValue)" class="form-control" placeholder="Enter item">
+              <input type="text" autofocus ng-model="item" typeahead="item for item in getItems($viewValue)" class="form-control" placeholder="Enter item" typeahead-on-select="getRecentPurchasesOfItem()">
           </div>
           <div class="form-group">
-              <input type="number" ng-model="quantity" class="form-control" placeholder="Enter quantity">
+              <input type="number" ng-model="quantity" class="form-control" placeholder="Enter quantity" ng-change="recalculate()">
           </div>
           <div class="form-group">
-              <input type="number" ng-model="price" class="form-control" placeholder="Enter price">
+              <input type="number" ng-model="price" class="form-control" placeholder="Enter price" ng=change="recalculate()">
           </div>
           <div class="form-group">
               <input type="text" ng-model="vendor" typeahead="vendor for vendor in getVendors($viewValue)" class="form-control" placeholder="Enter vendor">
@@ -31,6 +31,22 @@
           </div>
           <div class="form-group">
             <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)"> {{ alert.msg }} </alert>
+          </div>
+          <div class="form-group">
+            <table class="table table-striped table-bordered" ng-show="quantity != null">
+              <th> Date </th>
+              <th> Price </th>
+              <th> Quantity </th>
+              <th> Comparative Price </th>
+              <th> Vendor </th>
+              <tr ng-repeat="data in recent_data">
+                  <td> {{ data.Date }} </td>
+                  <td> {{ data.Price }} </td>
+                  <td> {{ data.Quantity }} </td>
+                  <td> {{ data.ComparitivePrice }} </td>
+                  <td> {{ data.Vendor }} </td>
+              </tr>
+            </table>
           </div>
       </tab>
       <tab heading="Things to buy">

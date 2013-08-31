@@ -23,6 +23,39 @@ type Spending struct {
     Total float32
 }
 
+type RecentPurchase struct {
+    Quantity float32
+    Price float32
+    NormalizedPrice float32
+    Vendor string
+    Date string
+}
+
+func GetRecentPurchasesOfItem (item string) (recentPurchases []RecentPurchase, err error) {
+    recentPurchases = [] RecentPurchase {}
+    con := getConnection()
+    defer con.Close()
+
+    rows, err := con.Query ("select price, quantity, vendor, (price/quantity), DATE_FORMAT(date, '%d-%M-%Y') from purchases where item=? order by date desc LIMIT 5", item)
+    
+    if err != nil {
+        panic (err)
+    }
+    
+    for rows.Next() {
+        var price float32
+        var quantity float32
+        var normalizedPrice float32
+        var vendor string
+        var date string
+        rows.Scan (&price, &quantity, &vendor, &normalizedPrice, &date)
+
+        recentPurchases = append (recentPurchases, RecentPurchase { quantity, price, normalizedPrice, vendor, date })
+    }
+    
+    return
+}
+
 func GetMonthSpendings() (spendings []Spending, err error)  {
     spendings = []Spending{}
     con := getConnection()

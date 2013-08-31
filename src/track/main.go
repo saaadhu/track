@@ -116,6 +116,28 @@ func getMonthlySpendingsHandler (w http.ResponseWriter, r *http.Request) {
     fmt.Fprintf (w, "%s", data)
 }
 
+func getRecentPurchasesHandler (w http.ResponseWriter, r *http.Request) {
+    body, err := ioutil.ReadAll(r.Body)
+    if err != nil {
+        panic(err)
+    }
+    
+    type JsonData struct {
+        Item string
+    }
+    
+    var jsonData JsonData
+    json.Unmarshal (body, &jsonData)
+    
+    defer r.Body.Close()
+
+    items, _ := db.GetRecentPurchasesOfItem (jsonData.Item)
+    data, _ := json.Marshal (items)
+
+    w.Header ().Add ("Content-Type", "application/json")
+    fmt.Fprintf (w, "%s", data)
+}
+
 func removeFromItemsToBuyHandler (w http.ResponseWriter, r *http.Request) {
     body, err := ioutil.ReadAll(r.Body)
     if err != nil {
@@ -197,6 +219,7 @@ func saveHandler (w http.ResponseWriter, r *http.Request) {
 func initWebServer() {
     http.HandleFunc ("/save", saveHandler)
     http.HandleFunc ("/add", addHandler)
+    http.HandleFunc ("/recent", getRecentPurchasesHandler)
     http.HandleFunc ("/get_items_to_buy", getItemsToBuyHandler)
     http.HandleFunc ("/remove_item_to_buy", removeFromItemsToBuyHandler)
     http.HandleFunc ("/items", getItemsHandler)
