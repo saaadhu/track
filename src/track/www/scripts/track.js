@@ -85,6 +85,10 @@ function TrackCtrl ($http, $scope) {
             $scope.recent_data[i].ComparitivePrice = $scope.quantity * $scope.recent_data[i].NormalizedPrice;
        }
     }
+
+    $scope.clear = function() {
+        $scope.recent_data = [];
+    }
     
     $scope.getItemsToBuy();
     $scope.getMonthlySpendings();
