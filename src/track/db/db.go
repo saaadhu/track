@@ -85,7 +85,7 @@ func FindVendors (searchString string) (vendors [] string, err error) {
     con := getConnection()
     defer con.Close()
 
-    rows, err := con.Query ("SELECT DISTINCT(vendor) from purchases where vendor LIKE '%" +  searchString + "%'")
+    rows, err := con.Query ("SELECT DISTINCT(vendor) from purchases where vendor LIKE ?", "%" + searchString + "%")
     
     if err != nil {
         panic (err)
@@ -107,7 +107,7 @@ func FindItems (searchString string) (items [] string, err error) {
     con := getConnection()
     defer con.Close()
 
-    rows, err := con.Query ("SELECT DISTINCT(item) from purchases where item LIKE '%" +  searchString + "%'")
+    rows, err := con.Query ("SELECT DISTINCT(item) from purchases where item LIKE ?", "%" + searchString + "%")
     
     if err != nil {
         panic (err)
