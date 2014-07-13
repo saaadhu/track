@@ -61,7 +61,7 @@ func GetMonthSpendings() (spendings []Spending, err error)  {
     con := getConnection()
     defer con.Close()
 
-    rows, err := con.Query ("SELECT YEAR(date), MONTHNAME(date), SUM(price) from purchases group by YEAR(date), MONTH(date) desc ")
+    rows, err := con.Query ("SELECT YEAR(date), MONTHNAME(date), SUM(price) from purchases group by YEAR(date) desc, MONTH(date) desc ")
     
     if err != nil {
         panic (err)
